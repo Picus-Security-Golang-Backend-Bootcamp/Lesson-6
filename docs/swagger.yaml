@@ -1,0 +1,197 @@
+basePath: /
+definitions:
+  auth.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  city.CityResponse:
+    properties:
+      code:
+        type: string
+      countryCode:
+        type: string
+      name:
+        type: string
+    type: object
+  city.CreateCityRequest:
+    properties:
+      code:
+        type: string
+      countryCode:
+        type: string
+      name:
+        type: string
+    type: object
+  pagination.Pages:
+    properties:
+      items: {}
+      page:
+        type: integer
+      pageCount:
+        type: integer
+      pageSize:
+        type: integer
+      totalCount:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@mywebsite.io
+    name: API Support
+    url: http://mywebsite.com/support
+  description: City service api provides city informations.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://mywebsite.com/terms
+  title: Gin City Service API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: login informations
+        in: body
+        name: loginRequest
+        required: true
+        schema:
+          $ref: '#/definitions/auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Login into system with username and password
+      tags:
+      - Auth
+  /city:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Page Index
+        in: query
+        name: page
+        type: integer
+      - description: Page Size
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pagination.Pages'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Gets all cities with paginated result
+      tags:
+      - City
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: City informations
+        in: body
+        name: createRequest
+        required: true
+        schema:
+          $ref: '#/definitions/city.CreateCityRequest'
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/city.CityResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Creates a new city
+      tags:
+      - City
+schemes:
+- http
+swagger: "2.0"
